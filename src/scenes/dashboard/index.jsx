@@ -20,7 +20,11 @@ const Dashboard = () => {
 	return (
 		<Box m='20px'>
 			{/* HEADER */}
-			<Box display='flex' justifyContent='space-between' alignItems='center'>
+			<Box
+				display='flex'
+				justifyContent='space-between'
+				alignItems='center'
+				gap='20px'>
 				<Header title='DASHBOARD' subtitle='Welcome to your dashboard' />
 
 				<Box>
@@ -40,17 +44,29 @@ const Dashboard = () => {
 
 			{/* GRID & CHARTS */}
 			<Box
-				display='grid'
-				gridTemplateColumns='repeat(12, 1fr)'
-				gridAutoRows='140px'
-				gap='20px'>
+				sx={{
+					display: "grid",
+					gridTemplateColumns: "repeat(12, 1fr)",
+					gridAutoRows: "140px",
+					gap: "20px",
+					...{
+						"@media (max-width: 900px)": {
+							display: "flex",
+							flexDirection: "column",
+							width: "100%",
+							gap: "20px",
+						},
+					},
+				}}>
 				{/* ROW 1 */}
 				<Box
-					gridColumn='span 3'
-					backgroundColor={colors.primary[400]}
-					display='flex'
-					alignItems='center'
-					justifyContent='center'>
+					sx={{
+						gridColumn: "span 3",
+						backgroundColor: `${colors.primary[400]}`,
+						display: "flex",
+						alignItems: "center",
+						justifyContent: "center",
+					}}>
 					<StatBox
 						title='12,361'
 						subtitle='Emails Sent'
@@ -64,11 +80,13 @@ const Dashboard = () => {
 					/>
 				</Box>
 				<Box
-					gridColumn='span 3'
-					backgroundColor={colors.primary[400]}
-					display='flex'
-					alignItems='center'
-					justifyContent='center'>
+					sx={{
+						gridColumn: "span 3",
+						backgroundColor: `${colors.primary[400]}`,
+						display: "flex",
+						alignItems: "center",
+						justifyContent: "center",
+					}}>
 					<StatBox
 						title='431,225'
 						subtitle='Sales Obtained'
@@ -82,11 +100,13 @@ const Dashboard = () => {
 					/>
 				</Box>
 				<Box
-					gridColumn='span 3'
-					backgroundColor={colors.primary[400]}
-					display='flex'
-					alignItems='center'
-					justifyContent='center'>
+					sx={{
+						gridColumn: "span 3",
+						backgroundColor: `${colors.primary[400]}`,
+						display: "flex",
+						alignItems: "center",
+						justifyContent: "center",
+					}}>
 					<StatBox
 						title='32,441'
 						subtitle='New Clients'
@@ -100,11 +120,13 @@ const Dashboard = () => {
 					/>
 				</Box>
 				<Box
-					gridColumn='span 3'
-					backgroundColor={colors.primary[400]}
-					display='flex'
-					alignItems='center'
-					justifyContent='center'>
+					sx={{
+						gridColumn: "span 3",
+						backgroundColor: `${colors.primary[400]}`,
+						display: "flex",
+						alignItems: "center",
+						justifyContent: "center",
+					}}>
 					<StatBox
 						title='1,325,134'
 						subtitle='Traffic Received'
@@ -117,7 +139,6 @@ const Dashboard = () => {
 						}
 					/>
 				</Box>
-
 				{/* ROW 2 */}
 				<Box
 					gridColumn='span 8'
@@ -200,7 +221,6 @@ const Dashboard = () => {
 						</Box>
 					))}
 				</Box>
-
 				{/* ROW 3 */}
 				<Box
 					gridColumn='span 4'
