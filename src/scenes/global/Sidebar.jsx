@@ -4,6 +4,7 @@ import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
 import { tokens } from "../../theme";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
@@ -16,6 +17,7 @@ import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutl
 import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
+import { useEffect } from "react";
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
 	const theme = useTheme();
@@ -35,10 +37,20 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
 };
 
 const Sidebar = () => {
+	const isNonMobile = useMediaQuery("(min-width:600px)");
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
-	const [isCollapsed, setIsCollapsed] = useState(false);
+	const [isCollapsed, setIsCollapsed] = useState(isNonMobile ? false : true);
 	const [selected, setSelected] = useState("Dashboard");
+
+	useEffect(() => {
+		const handleResize = () => {
+			setIsCollapsed(window.innerWidth < 1200);
+		};
+		window.addEventListener("resize", handleResize);
+		handleResize(); // Set initial value based on window width
+		return () => window.removeEventListener("resize", handleResize);
+	}, []);
 
 	return (
 		<Box
@@ -59,31 +71,33 @@ const Sidebar = () => {
 					color: "#6870fa !important",
 				},
 			}}>
-			<ProSidebar collapsed={isCollapsed} height='100vh'>
+			<ProSidebar collapsed={isCollapsed}>
 				<Menu iconShape='square'>
 					{/* LOGO AND MENU ICON */}
-					<MenuItem
-						onClick={() => setIsCollapsed(!isCollapsed)}
-						icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
-						style={{
-							margin: "10px 0 20px 0",
-							color: colors.grey[100],
-						}}>
-						{!isCollapsed && (
-							<Box
-								display='flex'
-								justifyContent='space-between'
-								alignItems='center'
-								ml='15px'>
-								<Typography variant='h3' color={colors.grey[100]}>
-									ADMINIS
-								</Typography>
-								<IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
-									<MenuOutlinedIcon />
-								</IconButton>
-							</Box>
-						)}
-					</MenuItem>
+					{isNonMobile ? (
+						<MenuItem
+							onClick={() => setIsCollapsed(!isCollapsed)}
+							icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
+							sx={{
+								margin: "10px 0 20px 0",
+								color: colors.grey[100],
+							}}>
+							{!isCollapsed && (
+								<Box
+									display='flex'
+									justifyContent='space-between'
+									alignItems='center'
+									ml='15px'>
+									<Typography variant='h3' color={colors.grey[100]}>
+										ADMINIS
+									</Typography>
+									<IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
+										<MenuOutlinedIcon />
+									</IconButton>
+								</Box>
+							)}
+						</MenuItem>
+					) : undefined}
 
 					{!isCollapsed && (
 						<Box mb='25px'>
@@ -102,7 +116,7 @@ const Sidebar = () => {
 									color={colors.grey[100]}
 									fontWeight='bold'
 									sx={{ m: "10px 0 0 0" }}>
-									Ed Roh
+									Admin
 								</Typography>
 								<Typography variant='h5' color={colors.greenAccent[500]}>
 									VP Fancy Admin
@@ -111,7 +125,7 @@ const Sidebar = () => {
 						</Box>
 					)}
 
-					<Box paddingLeft={isCollapsed ? undefined : "10%"}>
+					<Box paddingLeft={isCollapsed ? "0%" : "10%"}>
 						<Item
 							title='Dashboard'
 							to='/'

@@ -1,4 +1,5 @@
 import { Box, Typography, useTheme } from "@mui/material";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { DataGrid } from "@mui/x-data-grid";
 import { mockDataTeam } from "../../data/mockData";
 import { tokens } from "../../theme";
@@ -10,6 +11,7 @@ import Header from "../../components/Header";
 const Team = () => {
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
+	const isNonMobile = useMediaQuery("(min-width:900px)");
 
 	const columns = [
 		{ field: "id", headerName: "ID" },
@@ -43,7 +45,7 @@ const Team = () => {
 			renderCell: ({ row: { access } }) => {
 				return (
 					<Box
-						width='60%'
+						width='100%'
 						m='0 auto'
 						p='5px'
 						display='flex'
@@ -54,9 +56,15 @@ const Team = () => {
 								: colors.greenAccent[700]
 						}
 						borderRadius='4px'>
-						{access === "admin" && <AdminPanelSettingsOutlinedIcon />}
-						{access === "manager" && <SecurityOutlinedIcon />}
-						{access === "user" && <LockOpenOutlinedIcon />}
+						{isNonMobile
+							? access === "admin" && <AdminPanelSettingsOutlinedIcon />
+							: access === "admin"}
+						{isNonMobile
+							? access === "manager" && <SecurityOutlinedIcon />
+							: access === "manager"}
+						{isNonMobile
+							? access === "user" && <LockOpenOutlinedIcon />
+							: access === "user"}
 						<Typography color={colors.greenAccent[100]} sx={{ ml: "5px" }}>
 							{access}
 						</Typography>
@@ -71,6 +79,7 @@ const Team = () => {
 			<Header title='TEAM' subtitle='Managing the Team Meambers'></Header>
 			<Box
 				m='40px 0 0 0'
+				max-width='100%'
 				height='75vh'
 				sx={{
 					"& .MuiDataGrid-root": {
